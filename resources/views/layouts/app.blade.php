@@ -84,6 +84,7 @@
         </nav>
 
         <main>
+            <Toast></Toast>
             @yield('content')
         </main>
 

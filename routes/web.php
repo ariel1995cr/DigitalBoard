@@ -21,6 +21,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+//RUTAS TAREAS
+////CREAR
+Route::post('/task', 'TaskController@crearTarea');
+////LSITAR
+Route::get('/task', 'TaskController@listarTareas');
 
-Route::get('/home', 'HomeController@index')->name('home');
+//RUTAS UBICACIONES
+///LISTAR UBICACIONES
+Route::get('/ubication', 'UbicationController@listarUbicaciones');

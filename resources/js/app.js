@@ -8,11 +8,22 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+
+
+
+
 import Vue from 'vue'
 import * as VueGoogleMaps from 'vue2-google-maps'
 
-
+import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice';
 import 'primevue/resources/primevue.min.css';
+Vue.component('Toast', Toast,{
+    autoZIndex: false,
+
+});
+Vue.use(ToastService);
+
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -39,6 +50,7 @@ Vue.use(VueGoogleMaps, {
   //// If you want to automatically install all the components this property must be set to 'true':
   installComponents: true
 })
+
 
 import Geocoder from "@pderas/vue2-geocoder";
 
