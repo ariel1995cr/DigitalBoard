@@ -11,10 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
-    //
+    public function index()
+    {
+        return view('prueba');
+    }
+
+
     public function listarTareas()
     {
-        return Task::with('taskUbication')->get();
+        return Task::all();
     }
 
     public function crearTarea(TaskUbicationCreateRequest $request)
@@ -23,12 +28,10 @@ class TaskController extends Controller
         $fin = Carbon::createFromFormat('d-m-Y', $request->task['fin'])->format('Y-m-d');
 
         $task = new Task($request->task);
+
         $task->inicio = $inicio;
         $task->fin = $fin;
 
-        if($request->existeUbicacion){
-            $task->ubicacion_id = $request->ubication['id'];
-        }
 
         return $task->save();
     }

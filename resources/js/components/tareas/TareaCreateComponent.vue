@@ -58,38 +58,17 @@
                             </InlineMessage>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="inputEmail4">Existe ubicación?</label>
-                            <br>
-                            <InputSwitch @change="cambioUbicacion" v-model="existeUbicacion" />
+                        <SelectButton v-model="task.tipoIngreso" :options="opcionesdeUbicacion" />
+                        <InlineMessage class="w-100" v-if="this.errores['task.tipoIngreso']">
+                            <p v-bind:key="index" v-for="(error,index) in this.errores['task.tipoIngreso']">
+                                {{error}}
+                            </p>
+                        </InlineMessage>
                         </div>
 
-                        <div class="form-group col-md-6" v-if="!existeUbicacion">
-                            <label for="inputEmail4">Nombre ubicación</label>
-                            <InputText
-                                v-model="ubication.nombre"
-                                type="text"
-                                class="form-control"
-                                placeholder=""
-                            />
-                            <InlineMessage class="w-100" v-if="this.errores['ubication.nombre']">
-                                <p v-bind:key="index" v-for="(error,index) in this.errores['ubication.nombre']">
-                                    {{error}}
-                                </p>
-                            </InlineMessage>
-                        </div>
 
-                        <div class="form-group col-md-12">
+                        <div class="form-group col-md-12" v-if="task.tipoIngreso === 'Direccion'">
                             <label for="inputEmail4">Dirección</label>
-                            <Dropdown class="w-100" v-model="ubication" :options="ubicaciones" optionLabel="nombre" :filter="true" placeholder="Seleccionar ubicación" :showClear="true" v-if="existeUbicacion">
-                                <template class="w-100" #value="slotProps">
-                                    <div v-if="slotProps.value">
-                                        <div>{{slotProps.value.nombre}} | lat: {{slotProps.value.latitud}} lng: {{slotProps.value.longitud}}</div>
-                                    </div>
-                                    <span v-else>
-                                        {{slotProps.placeholder}}
-                                    </span>
-                                </template>
-                            </Dropdown>
 
                             <GmapAutocomplete
                                 :options="{
@@ -101,18 +80,61 @@
                                 }"
                                 class="form-control"
                                 @place_changed="setPlace"
-                                v-else=""
                             ></GmapAutocomplete>
-                            <InlineMessage class="w-100" v-if="this.errores['ubication.direccion']">
-                                <p v-bind:key="index" v-for="(error,index) in this.errores['ubication.direccion']">
-                                    {{error}}
-                                </p>
-                            </InlineMessage>
+
+                            <InlineMessage class="w-100" v-if="this.errores['task.direccion']">
+                            <p v-bind:key="index" v-for="(error,index) in this.errores['task.direccion']">
+                                {{error}}
+                            </p>
+                        </InlineMessage>
                         </div>
+
+                        <div class="row" v-if="task.tipoIngreso === 'Coordenadas'">
+                            <div class="form-group col">
+                                <label for="inputEmail4">Latitud</label>
+                                <InputText
+                                    @change="ubicacionModificada"
+                                    v-model.number.lazy="task.latitud"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder=""
+                                />
+                                <InlineMessage class="w-100" v-if="this.errores['task.latitud']">
+                                    <p v-bind:key="index" v-for="(error,index) in this.errores['task.latitud']">
+                                        {{error}}
+                                    </p>
+                                </InlineMessage>
+                            </div>
+                            <div class="form-group col">
+                                <label for="inputEmail4">Longitud</label>
+                                <InputText
+                                    @change="ubicacionModificada"
+                                    v-model.number.lazy="task.longitud"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder=""
+                                />
+                                <InlineMessage class="w-100" v-if="this.errores['task.longitud']">
+                                    <p v-bind:key="index" v-for="(error,index) in this.errores['task.longitud']">
+                                        {{error}}
+                                    </p>
+                                </InlineMessage>
+                            </div>
+                        </div>
+
                         <GmapMap
                             style="width: 600px; height: 300px;"
                             :zoom="1"
                             :center="{ lat: 0, lng: 0 }"
+                            :options="{
+                            zoomControl: false,
+                            mapTypeControl: false,
+                            scaleControl: false,
+                            streetViewControl: false,
+                            rotateControl: false,
+                            fullscreenControl: false,
+                            disableDefaultUI: false
+                            }"
                         >
                             <GmapMarker
                                 v-for="(marker, index) in markers"
@@ -128,36 +150,7 @@
                                 }"
                             />
                         </GmapMap>
-                        <div class="form-group col-md-6" v-if="!existeUbicacion">
-                            <label for="inputEmail4">Latitud</label>
-                            <InputText
-                                @change="ubicacionModificada"
-                                v-model.number.lazy="ubication.latitud"
-                                type="text"
-                                class="form-control"
-                                placeholder=""
-                            />
-                            <InlineMessage class="w-100" v-if="this.errores['ubication.latitud']">
-                                <p v-bind:key="index" v-for="(error,index) in this.errores['ubication.latitud']">
-                                    {{error}}
-                                </p>
-                            </InlineMessage>
-                        </div>
-                        <div class="form-group col-md-6" v-if="!existeUbicacion">
-                            <label for="inputEmail4">Longitud</label>
-                            <InputText
-                                @change="ubicacionModificada"
-                                v-model.number.lazy="ubication.longitud"
-                                type="text"
-                                class="form-control"
-                                placeholder=""
-                            />
-                            <InlineMessage class="w-100" v-if="this.errores['ubication.longitud']">
-                                <p v-bind:key="index" v-for="(error,index) in this.errores['ubication.longitud']">
-                                    {{error}}
-                                </p>
-                            </InlineMessage>
-                        </div>
+
                     </div>
                 </form>
             </div>
@@ -184,6 +177,7 @@ import Button from 'primevue/button';
 import Toast from 'primevue/toast';
 import InlineMessage from 'primevue/inlinemessage';
 import Dropdown from 'primevue/dropdown';
+import SelectButton from 'primevue/selectbutton';
 
 
 export default {
@@ -194,25 +188,27 @@ export default {
         MultiSelect,
         Button,
         InlineMessage,
-        Dropdown
+        Dropdown,
+        SelectButton
     },
     data() {
         return {
             task: {
                 nombre: "",
-                ubicacion_id: "",
+                latitud: "",
+                longitud: "",
                 inicio: "",
+                direccion:"",
                 fin: "",
                 descripcion: "",
                 created_at: "",
-                updated_at: ""
+                updated_at: "",
+                tipoIngreso: 'Direccion',
             },
-            ubication: null,
-            existeUbicacion: true,
             place: null,
             markers: [],
-            carselected: null,
             ubicaciones: [],
+            opcionesdeUbicacion: ['Direccion','Coordenadas'],
             errores:{
 
             }
@@ -235,20 +231,32 @@ export default {
                         lng: this.place.geometry.location.lng()
                     }
                 });
-                this.ubication.latitud = this.place.geometry.location.lat();
-                this.ubication.longitud = this.place.geometry.location.lng();
-                this.ubication.direccion = this.place.formatted_address;
-                console.log(this.place);
+                this.task.latitud = this.place.geometry.location.lat();
+                this.task.longitud = this.place.geometry.location.lng();
+                this.task.direccion = this.place.formatted_address;
                 this.place = null;
             }
         },
         ubicacionModificada() {
-            this.markers[0].position.lat = this.ubication.latitud;
-            this.markers[0].position.lng = this.ubication.longitud;
+            if(this.task.latitud === '' || this.task.longitud ===''){
+                return ;
+            }
+
+            if(this.markers[0] === undefined){
+                this.markers.push({
+                    position: {
+                        lat: Number(32),
+                        lng: Number(45)
+                    }
+                });
+            }
+
+            this.markers[0].position.lat = this.task.latitud;
+            this.markers[0].position.lng = this.task.longitud;
             Vue.$geocoder.setDefaultMode("lat-lng");
             var latLngObj = {
-                lat: this.ubication.latitud,
-                lng: this.ubication.longitud
+                lat: this.task.latitud,
+                lng: this.task.longitud
             };
             Vue.$geocoder.send(latLngObj, response => {
                 console.log(response);
@@ -257,8 +265,6 @@ export default {
         crearTarea () {
             axios.post('/task',{
                 task: this.task,
-                ubication: this.ubication,
-                existeUbicacion: this.existeUbicacion,
             }).then(response=>{
                 console.log(response.data);
             }).catch(e => {

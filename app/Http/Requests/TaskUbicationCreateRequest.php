@@ -25,18 +25,16 @@ class TaskUbicationCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
-            'task.nombre'         => 'required|string',
-            'task.inicio'         => 'date|date_format:d-m-Y|after_or_equal:'.Carbon::now()->format('d-m-Y').'',
-            'task.fin'            => 'date|date_format:d-m-Y|after_or_equal:'.$this->task['inicio'].'',
+            'task.nombre'         => 'required|string|unique:tasks,nombre',
+            'task.inicio'         => 'nullable|date|date_format:d-m-Y|after_or_equal:'.Carbon::now()->format('d-m-Y').'',
+            'task.fin'            => 'nullable|date|date_format:d-m-Y|after_or_equal:'.$this->task['inicio'].'',
             'task.descripcion'    => 'nullable',
             'task.created_at'     => 'nullable',
             'task.updated_at'     => 'nullable',
-            'ubication.id'        => 'required_if:existeUbicacion,true',
-            'ubication.direccion' => 'required_if:existeUbicacion,false',
-            'ubication.nombre'    => 'required_if:existeUbicacion,false',
-            'ubication.latitud'   => 'required_if:existeUbicacion,false',
-            'ubication.longitud'  => 'required_if:existeUbicacion,false',
+            'task.latitud'        => 'required_if:task.tipoIngreso,Coordenadas',
+            'task.longitud'       => 'required_if:task.tipoIngreso,Coordenadas',
+            'task.direccion'      => 'required_if:task.tipoIngreso,Direccion',
+            'task.tipoIngreso'    => 'required'
         ];
     }
 }

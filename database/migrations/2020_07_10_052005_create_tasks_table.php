@@ -16,8 +16,10 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('ubicacion_id');
-            $table->foreign('ubicacion_id')->references('id')->on('ubications');
+            #$table->string('ubicacion_id');
+            #$table->foreign('ubicacion_id')->references('id')->on('ubications');
+            $table->string('latitud');
+            $table->string('longitud');
             $table->date('inicio');
             $table->date('fin');
             $table->longText('descripcion');

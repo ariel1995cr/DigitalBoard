@@ -2104,6 +2104,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   // replace src with dist if you have Babel issues
   data: function data() {
@@ -2131,9 +2140,9 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('/task').then(function (response) {
         response.data.map(function (value, key) {
-          value.task_ubication.position = {
-            lat: Number(value.task_ubication.latitud),
-            lng: Number(value.task_ubication.longitud)
+          value.position = {
+            lat: Number(value.latitud),
+            lng: Number(value.longitud)
           };
         });
         _this.markers = response.data;
@@ -2143,7 +2152,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     toggleInfoWindow: function toggleInfoWindow(marker, idx) {
       this.infoWindowPos = marker.position;
-      this.infoContent = marker.infoText; //check if its the same marker that was selected if yes toggle
+      this.infoContent = marker; //check if its the same marker that was selected if yes toggle
 
       if (this.currentMidx == idx) {
         this.infoWinOpen = !this.infoWinOpen;
@@ -2183,6 +2192,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var primevue_inlinemessage__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(primevue_inlinemessage__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var primevue_dropdown__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! primevue/dropdown */ "./node_modules/primevue/dropdown.js");
 /* harmony import */ var primevue_dropdown__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(primevue_dropdown__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var primevue_selectbutton__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! primevue/selectbutton */ "./node_modules/primevue/selectbutton.js");
+/* harmony import */ var primevue_selectbutton__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(primevue_selectbutton__WEBPACK_IMPORTED_MODULE_8__);
 //
 //
 //
@@ -2353,13 +2364,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -2376,25 +2381,27 @@ __webpack_require__.r(__webpack_exports__);
     MultiSelect: primevue_multiselect__WEBPACK_IMPORTED_MODULE_3___default.a,
     Button: primevue_button__WEBPACK_IMPORTED_MODULE_4___default.a,
     InlineMessage: primevue_inlinemessage__WEBPACK_IMPORTED_MODULE_6___default.a,
-    Dropdown: primevue_dropdown__WEBPACK_IMPORTED_MODULE_7___default.a
+    Dropdown: primevue_dropdown__WEBPACK_IMPORTED_MODULE_7___default.a,
+    SelectButton: primevue_selectbutton__WEBPACK_IMPORTED_MODULE_8___default.a
   },
   data: function data() {
     return {
       task: {
         nombre: "",
-        ubicacion_id: "",
+        latitud: "",
+        longitud: "",
         inicio: "",
+        direccion: "",
         fin: "",
         descripcion: "",
         created_at: "",
-        updated_at: ""
+        updated_at: "",
+        tipoIngreso: 'Direccion'
       },
-      ubication: null,
-      existeUbicacion: true,
       place: null,
       markers: [],
-      carselected: null,
       ubicaciones: [],
+      opcionesdeUbicacion: ['Direccion', 'Coordenadas'],
       errores: {}
     };
   },
@@ -2416,20 +2423,32 @@ __webpack_require__.r(__webpack_exports__);
             lng: this.place.geometry.location.lng()
           }
         });
-        this.ubication.latitud = this.place.geometry.location.lat();
-        this.ubication.longitud = this.place.geometry.location.lng();
-        this.ubication.direccion = this.place.formatted_address;
-        console.log(this.place);
+        this.task.latitud = this.place.geometry.location.lat();
+        this.task.longitud = this.place.geometry.location.lng();
+        this.task.direccion = this.place.formatted_address;
         this.place = null;
       }
     },
     ubicacionModificada: function ubicacionModificada() {
-      this.markers[0].position.lat = this.ubication.latitud;
-      this.markers[0].position.lng = this.ubication.longitud;
+      if (this.task.latitud === '' || this.task.longitud === '') {
+        return;
+      }
+
+      if (this.markers[0] === undefined) {
+        this.markers.push({
+          position: {
+            lat: Number(32),
+            lng: Number(45)
+          }
+        });
+      }
+
+      this.markers[0].position.lat = this.task.latitud;
+      this.markers[0].position.lng = this.task.longitud;
       Vue.$geocoder.setDefaultMode("lat-lng");
       var latLngObj = {
-        lat: this.ubication.latitud,
-        lng: this.ubication.longitud
+        lat: this.task.latitud,
+        lng: this.task.longitud
       };
       Vue.$geocoder.send(latLngObj, function (response) {
         console.log(response);
@@ -2439,9 +2458,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/task', {
-        task: this.task,
-        ubication: this.ubication,
-        existeUbicacion: this.existeUbicacion
+        task: this.task
       }).then(function (response) {
         console.log(response.data);
       })["catch"](function (e) {
@@ -38535,6 +38552,75 @@ exports.default = _default;
 
 /***/ }),
 
+/***/ "./node_modules/primevue/components/selectbutton/SelectButton.vue":
+/*!************************************************************************!*\
+  !*** ./node_modules/primevue/components/selectbutton/SelectButton.vue ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SelectButton_vue_vue_type_template_id_a9a74c32___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SelectButton.vue?vue&type=template&id=a9a74c32& */ "./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=template&id=a9a74c32&");
+/* harmony import */ var _SelectButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SelectButton.vue?vue&type=script&lang=js& */ "./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SelectButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SelectButton_vue_vue_type_template_id_a9a74c32___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SelectButton_vue_vue_type_template_id_a9a74c32___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "node_modules/primevue/components/selectbutton/SelectButton.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _vue_loader_lib_index_js_vue_loader_options_SelectButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../vue-loader/lib??vue-loader-options!./SelectButton.vue?vue&type=script&lang=js& */ "./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_vue_loader_lib_index_js_vue_loader_options_SelectButton_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=template&id=a9a74c32&":
+/*!*******************************************************************************************************!*\
+  !*** ./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=template&id=a9a74c32& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_SelectButton_vue_vue_type_template_id_a9a74c32___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../vue-loader/lib??vue-loader-options!./SelectButton.vue?vue&type=template&id=a9a74c32& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=template&id=a9a74c32&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_SelectButton_vue_vue_type_template_id_a9a74c32___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _vue_loader_lib_loaders_templateLoader_js_vue_loader_options_vue_loader_lib_index_js_vue_loader_options_SelectButton_vue_vue_type_template_id_a9a74c32___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./node_modules/primevue/components/toast/Toast.vue":
 /*!**********************************************************!*\
   !*** ./node_modules/primevue/components/toast/Toast.vue ***!
@@ -39619,6 +39705,20 @@ var update = __webpack_require__(/*! ../../style-loader/lib/addStyles.js */ "./n
 if(content.locals) module.exports = content.locals;
 
 if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/primevue/selectbutton.js":
+/*!***********************************************!*\
+  !*** ./node_modules/primevue/selectbutton.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+module.exports = __webpack_require__(/*! ./components/selectbutton/SelectButton.vue */ "./node_modules/primevue/components/selectbutton/SelectButton.vue");
+            
 
 /***/ }),
 
@@ -42493,6 +42593,136 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/ObjectUtils */ "./node_modules/primevue/components/utils/ObjectUtils.js");
+/* harmony import */ var _utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ripple_Ripple__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ripple/Ripple */ "./node_modules/primevue/components/ripple/Ripple.js");
+/* harmony import */ var _ripple_Ripple__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_ripple_Ripple__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        value: null,
+        options: Array,
+        optionLabel: null,
+        optionValue: null,
+        optionDisabled: null,
+		multiple: Boolean,
+        disabled: Boolean,
+        dataKey: null,
+        ariaLabelledBy: null
+    },
+    data() {
+        return {
+            focusedIndex: null
+        };
+    },
+    methods: {
+        getOptionLabel(option) {
+            return this.optionLabel ? _utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0___default.a.resolveFieldData(option, this.optionLabel) : option;
+        },
+        getOptionValue(option) {
+            return this.optionValue ? _utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0___default.a.resolveFieldData(option, this.optionValue) : option;
+        },
+        getOptionRenderKey(option) {
+            return this.dataKey ? _utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0___default.a.resolveFieldData(option, this.dataKey) : this.getOptionLabel(option);
+        },
+        isOptionDisabled(option) {
+            return this.optionDisabled ? _utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0___default.a.resolveFieldData(option, this.optionDisabled) : false;
+        },
+        onOptionSelect(event, option) {
+            if (this.disabled || this.isOptionDisabled(option)) {
+                return;
+            }
+
+            let selected = this.isSelected(option);
+            let optionValue = this.getOptionValue(option);
+            let newValue;
+
+            if(this.multiple) {
+                if (selected)
+                    newValue = this.value.filter(val => !_utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0___default.a.equals(val, optionValue, this.equalityKey));
+                else
+                    newValue = this.value ? [...this.value, optionValue]: [optionValue];
+            }
+            else {
+                newValue = selected ? null : optionValue;
+            }
+
+            this.$emit('input', newValue);
+        },
+        isSelected(option) {
+            let selected = false;
+            let optionValue = this.getOptionValue(option);
+
+            if (this.multiple) {
+                if (this.value) {
+                    for (let val of this.value) {
+                        if (_utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0___default.a.equals(val, optionValue, this.equalityKey)) {
+                            selected = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            else {
+                selected = _utils_ObjectUtils__WEBPACK_IMPORTED_MODULE_0___default.a.equals(this.value, optionValue, this.equalityKey);
+            }
+
+            return selected;
+        },
+        onFocus(event, index) {
+            this.focusedIndex = index;
+            this.$emit('focus', event);
+        },
+        onBlur(event) {
+            this.focusedIndex = null
+            this.$emit('blur', event);
+        },
+        getButtonClass(option, i) {
+            return ['p-button p-component', {
+                'p-highlight': this.isSelected(option),
+                'p-disabled': this.isOptionDisabled(option),
+                'p-focus': (i === this.focusedIndex)
+            }];
+        }
+    },
+	computed: {
+        equalityKey() {
+            return this.optionValue ? null : this.dataKey;
+        }
+    },
+    directives: {
+        'ripple': _ripple_Ripple__WEBPACK_IMPORTED_MODULE_1___default.a
+    }
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/components/toast/Toast.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/components/toast/Toast.vue?vue&type=script&lang=js& ***!
@@ -43539,6 +43769,102 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=template&id=a9a74c32&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/components/selectbutton/SelectButton.vue?vue&type=template&id=a9a74c32& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "p-selectbutton p-buttonset p-component",
+      attrs: { role: "group" }
+    },
+    _vm._l(_vm.options, function(option, i) {
+      return _c(
+        "div",
+        {
+          directives: [{ name: "ripple", rawName: "v-ripple" }],
+          key: _vm.getOptionRenderKey(option),
+          class: _vm.getButtonClass(option, i),
+          attrs: {
+            "aria-label": _vm.getOptionLabel(option),
+            role: "button",
+            "aria-pressed": _vm.isSelected(option),
+            tabindex: _vm.isOptionDisabled(option) ? null : "0",
+            "aria-labelledby": _vm.ariaLabelledBy
+          },
+          on: {
+            click: function($event) {
+              return _vm.onOptionSelect($event, option, i)
+            },
+            keydown: [
+              function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                ) {
+                  return null
+                }
+                $event.preventDefault()
+                return _vm.onOptionSelect($event, option, i)
+              },
+              function($event) {
+                if (
+                  !$event.type.indexOf("key") &&
+                  _vm._k($event.keyCode, "space", 32, $event.key, [
+                    " ",
+                    "Spacebar"
+                  ])
+                ) {
+                  return null
+                }
+                $event.preventDefault()
+                return _vm.onOptionSelect($event, option)
+              }
+            ],
+            focus: function($event) {
+              return _vm.onFocus($event, i)
+            },
+            blur: function($event) {
+              return _vm.onBlur($event)
+            }
+          }
+        },
+        [
+          _vm._t(
+            "option",
+            [
+              _c("span", { staticClass: "p-button-label" }, [
+                _vm._v(_vm._s(_vm.getOptionLabel(option)))
+              ])
+            ],
+            { option: option, index: i }
+          )
+        ],
+        2
+      )
+    }),
+    0
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./node_modules/primevue/components/toast/Toast.vue?vue&type=template&id=7a2ad557&":
 /*!***********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./node_modules/primevue/components/toast/Toast.vue?vue&type=template&id=7a2ad557& ***!
@@ -43881,28 +44207,41 @@ var render = function() {
           attrs: {
             center: { lat: 10, lng: 10 },
             zoom: 7,
-            "map-type-id": "terrain"
+            "map-type-id": "terrain",
+            options: {
+              zoomControl: false,
+              mapTypeControl: false,
+              scaleControl: false,
+              streetViewControl: false,
+              rotateControl: false,
+              fullscreenControl: false,
+              disableDefaultUI: false
+            }
           }
         },
         [
-          _c("GmapInfoWindow", {
-            attrs: {
-              options: _vm.infoOptions,
-              position: _vm.infoWindowPos,
-              opened: _vm.infoWinOpen
-            },
-            on: {
-              closeclick: function($event) {
-                _vm.infoWinOpen = false
+          _c(
+            "GmapInfoWindow",
+            {
+              attrs: {
+                options: _vm.infoOptions,
+                position: _vm.infoWindowPos,
+                opened: _vm.infoWinOpen
+              },
+              on: {
+                closeclick: function($event) {
+                  _vm.infoWinOpen = false
+                }
               }
-            }
-          }),
+            },
+            [_vm._v("\n        " + _vm._s(_vm.infoContent) + "\n    ")]
+          ),
           _vm._v(" "),
           _vm._l(_vm.markers, function(m, index) {
             return _c("GmapMarker", {
               key: index,
               attrs: {
-                position: m.task_ubication.position,
+                position: m.position,
                 clickable: true,
                 draggable: false
               },
@@ -44088,133 +44427,50 @@ var render = function() {
                   "div",
                   { staticClass: "form-group col-md-6" },
                   [
-                    _c("label", { attrs: { for: "inputEmail4" } }, [
-                      _vm._v("Existe ubicación?")
-                    ]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _c("InputSwitch", {
-                      on: { change: _vm.cambioUbicacion },
+                    _c("SelectButton", {
+                      attrs: { options: _vm.opcionesdeUbicacion },
                       model: {
-                        value: _vm.existeUbicacion,
+                        value: _vm.task.tipoIngreso,
                         callback: function($$v) {
-                          _vm.existeUbicacion = $$v
+                          _vm.$set(_vm.task, "tipoIngreso", $$v)
                         },
-                        expression: "existeUbicacion"
+                        expression: "task.tipoIngreso"
                       }
-                    })
+                    }),
+                    _vm._v(" "),
+                    this.errores["task.tipoIngreso"]
+                      ? _c(
+                          "InlineMessage",
+                          { staticClass: "w-100" },
+                          _vm._l(this.errores["task.tipoIngreso"], function(
+                            error,
+                            index
+                          ) {
+                            return _c("p", { key: index }, [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(error) +
+                                  "\n                        "
+                              )
+                            ])
+                          }),
+                          0
+                        )
+                      : _vm._e()
                   ],
                   1
                 ),
                 _vm._v(" "),
-                !_vm.existeUbicacion
+                _vm.task.tipoIngreso === "Direccion"
                   ? _c(
                       "div",
-                      { staticClass: "form-group col-md-6" },
+                      { staticClass: "form-group col-md-12" },
                       [
                         _c("label", { attrs: { for: "inputEmail4" } }, [
-                          _vm._v("Nombre ubicación")
+                          _vm._v("Dirección")
                         ]),
                         _vm._v(" "),
-                        _c("InputText", {
-                          staticClass: "form-control",
-                          attrs: { type: "text", placeholder: "" },
-                          model: {
-                            value: _vm.ubication.nombre,
-                            callback: function($$v) {
-                              _vm.$set(_vm.ubication, "nombre", $$v)
-                            },
-                            expression: "ubication.nombre"
-                          }
-                        }),
-                        _vm._v(" "),
-                        this.errores["ubication.nombre"]
-                          ? _c(
-                              "InlineMessage",
-                              { staticClass: "w-100" },
-                              _vm._l(this.errores["ubication.nombre"], function(
-                                error,
-                                index
-                              ) {
-                                return _c("p", { key: index }, [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(error) +
-                                      "\n                            "
-                                  )
-                                ])
-                              }),
-                              0
-                            )
-                          : _vm._e()
-                      ],
-                      1
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form-group col-md-12" },
-                  [
-                    _c("label", { attrs: { for: "inputEmail4" } }, [
-                      _vm._v("Dirección")
-                    ]),
-                    _vm._v(" "),
-                    _vm.existeUbicacion
-                      ? _c("Dropdown", {
-                          staticClass: "w-100",
-                          attrs: {
-                            options: _vm.ubicaciones,
-                            optionLabel: "nombre",
-                            filter: true,
-                            placeholder: "Seleccionar ubicación",
-                            showClear: true
-                          },
-                          scopedSlots: _vm._u(
-                            [
-                              {
-                                key: "value",
-                                fn: function(slotProps) {
-                                  return [
-                                    slotProps.value
-                                      ? _c("div", [
-                                          _c("div", [
-                                            _vm._v(
-                                              _vm._s(slotProps.value.nombre) +
-                                                " | lat: " +
-                                                _vm._s(
-                                                  slotProps.value.latitud
-                                                ) +
-                                                " lng: " +
-                                                _vm._s(slotProps.value.longitud)
-                                            )
-                                          ])
-                                        ])
-                                      : _c("span", [
-                                          _vm._v(
-                                            "\n                                    " +
-                                              _vm._s(slotProps.placeholder) +
-                                              "\n                                "
-                                          )
-                                        ])
-                                  ]
-                                }
-                              }
-                            ],
-                            null,
-                            false,
-                            671762916
-                          ),
-                          model: {
-                            value: _vm.ubication,
-                            callback: function($$v) {
-                              _vm.ubication = $$v
-                            },
-                            expression: "ubication"
-                          }
-                        })
-                      : _c("GmapAutocomplete", {
+                        _c("GmapAutocomplete", {
                           staticClass: "form-control",
                           attrs: {
                             options: {
@@ -44227,35 +44483,140 @@ var render = function() {
                           },
                           on: { place_changed: _vm.setPlace }
                         }),
-                    _vm._v(" "),
-                    this.errores["ubication.direccion"]
-                      ? _c(
-                          "InlineMessage",
-                          { staticClass: "w-100" },
-                          _vm._l(this.errores["ubication.direccion"], function(
-                            error,
-                            index
-                          ) {
-                            return _c("p", { key: index }, [
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(error) +
-                                  "\n                            "
-                              )
-                            ])
+                        _vm._v(" "),
+                        this.errores["task.direccion"]
+                          ? _c(
+                              "InlineMessage",
+                              { staticClass: "w-100" },
+                              _vm._l(this.errores["task.direccion"], function(
+                                error,
+                                index
+                              ) {
+                                return _c("p", { key: index }, [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(error) +
+                                      "\n                        "
+                                  )
+                                ])
+                              }),
+                              0
+                            )
+                          : _vm._e()
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.task.tipoIngreso === "Coordenadas"
+                  ? _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "form-group col" },
+                        [
+                          _c("label", { attrs: { for: "inputEmail4" } }, [
+                            _vm._v("Latitud")
+                          ]),
+                          _vm._v(" "),
+                          _c("InputText", {
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: "" },
+                            on: { change: _vm.ubicacionModificada },
+                            model: {
+                              value: _vm.task.latitud,
+                              callback: function($$v) {
+                                _vm.$set(_vm.task, "latitud", _vm._n($$v))
+                              },
+                              expression: "task.latitud"
+                            }
                           }),
-                          0
-                        )
-                      : _vm._e()
-                  ],
-                  1
-                ),
+                          _vm._v(" "),
+                          this.errores["task.latitud"]
+                            ? _c(
+                                "InlineMessage",
+                                { staticClass: "w-100" },
+                                _vm._l(this.errores["task.latitud"], function(
+                                  error,
+                                  index
+                                ) {
+                                  return _c("p", { key: index }, [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ])
+                                }),
+                                0
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "form-group col" },
+                        [
+                          _c("label", { attrs: { for: "inputEmail4" } }, [
+                            _vm._v("Longitud")
+                          ]),
+                          _vm._v(" "),
+                          _c("InputText", {
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: "" },
+                            on: { change: _vm.ubicacionModificada },
+                            model: {
+                              value: _vm.task.longitud,
+                              callback: function($$v) {
+                                _vm.$set(_vm.task, "longitud", _vm._n($$v))
+                              },
+                              expression: "task.longitud"
+                            }
+                          }),
+                          _vm._v(" "),
+                          this.errores["task.longitud"]
+                            ? _c(
+                                "InlineMessage",
+                                { staticClass: "w-100" },
+                                _vm._l(this.errores["task.longitud"], function(
+                                  error,
+                                  index
+                                ) {
+                                  return _c("p", { key: index }, [
+                                    _vm._v(
+                                      "\n                                    " +
+                                        _vm._s(error) +
+                                        "\n                                "
+                                    )
+                                  ])
+                                }),
+                                0
+                              )
+                            : _vm._e()
+                        ],
+                        1
+                      )
+                    ])
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "GmapMap",
                   {
                     staticStyle: { width: "600px", height: "300px" },
-                    attrs: { zoom: 1, center: { lat: 0, lng: 0 } }
+                    attrs: {
+                      zoom: 1,
+                      center: { lat: 0, lng: 0 },
+                      options: {
+                        zoomControl: false,
+                        mapTypeControl: false,
+                        scaleControl: false,
+                        streetViewControl: false,
+                        rotateControl: false,
+                        fullscreenControl: false,
+                        disableDefaultUI: false
+                      }
+                    }
                   },
                   [
                     _vm._l(_vm.markers, function(marker, index) {
@@ -44278,99 +44639,7 @@ var render = function() {
                       : _vm._e()
                   ],
                   2
-                ),
-                _vm._v(" "),
-                !_vm.existeUbicacion
-                  ? _c(
-                      "div",
-                      { staticClass: "form-group col-md-6" },
-                      [
-                        _c("label", { attrs: { for: "inputEmail4" } }, [
-                          _vm._v("Latitud")
-                        ]),
-                        _vm._v(" "),
-                        _c("InputText", {
-                          staticClass: "form-control",
-                          attrs: { type: "text", placeholder: "" },
-                          on: { change: _vm.ubicacionModificada },
-                          model: {
-                            value: _vm.ubication.latitud,
-                            callback: function($$v) {
-                              _vm.$set(_vm.ubication, "latitud", _vm._n($$v))
-                            },
-                            expression: "ubication.latitud"
-                          }
-                        }),
-                        _vm._v(" "),
-                        this.errores["ubication.latitud"]
-                          ? _c(
-                              "InlineMessage",
-                              { staticClass: "w-100" },
-                              _vm._l(
-                                this.errores["ubication.latitud"],
-                                function(error, index) {
-                                  return _c("p", { key: index }, [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(error) +
-                                        "\n                            "
-                                    )
-                                  ])
-                                }
-                              ),
-                              0
-                            )
-                          : _vm._e()
-                      ],
-                      1
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                !_vm.existeUbicacion
-                  ? _c(
-                      "div",
-                      { staticClass: "form-group col-md-6" },
-                      [
-                        _c("label", { attrs: { for: "inputEmail4" } }, [
-                          _vm._v("Longitud")
-                        ]),
-                        _vm._v(" "),
-                        _c("InputText", {
-                          staticClass: "form-control",
-                          attrs: { type: "text", placeholder: "" },
-                          on: { change: _vm.ubicacionModificada },
-                          model: {
-                            value: _vm.ubication.longitud,
-                            callback: function($$v) {
-                              _vm.$set(_vm.ubication, "longitud", _vm._n($$v))
-                            },
-                            expression: "ubication.longitud"
-                          }
-                        }),
-                        _vm._v(" "),
-                        this.errores["ubication.longitud"]
-                          ? _c(
-                              "InlineMessage",
-                              { staticClass: "w-100" },
-                              _vm._l(
-                                this.errores["ubication.longitud"],
-                                function(error, index) {
-                                  return _c("p", { key: index }, [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(error) +
-                                        "\n                            "
-                                    )
-                                  ])
-                                }
-                              ),
-                              0
-                            )
-                          : _vm._e()
-                      ],
-                      1
-                    )
-                  : _vm._e()
+                )
               ],
               1
             )
@@ -59174,7 +59443,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('Toast', primevue_toast__WE
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(primevue_toastservice__WEBPACK_IMPORTED_MODULE_3___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_1__, {
   load: {
-    key: 'AIzaSyB9vtZUehBaqSKq4psOePI82mS6Y9NjVNk',
+    key: "AIzaSyBxvS42el_I328QCEwig5Vx1Lj8gVBXT4Q",
     libraries: 'places' // This is required if you use the Autocomplete plugin
     // OR: libraries: 'places,drawing'
     // OR: libraries: 'places,drawing,visualization'
@@ -59203,7 +59472,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(_pderas_vue2_geocoder__WEBPACK_IM
   // e.g. 'en'
   defaultMode: 'address',
   // or 'lat-lng'
-  googleMapsApiKey: 'AIzaSyB9vtZUehBaqSKq4psOePI82mS6Y9NjVNk'
+  googleMapsApiKey: "AIzaSyBxvS42el_I328QCEwig5Vx1Lj8gVBXT4Q"
 });
 /**
  * The following block of code may be used to automatically register your

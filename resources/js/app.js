@@ -27,7 +27,7 @@ Vue.use(ToastService);
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyB9vtZUehBaqSKq4psOePI82mS6Y9NjVNk',
+    key: process.env.MIX_GOOGLE_MAP_KEY,
     libraries: 'places', // This is required if you use the Autocomplete plugin
     // OR: libraries: 'places,drawing'
     // OR: libraries: 'places,drawing,visualization'
@@ -58,7 +58,7 @@ Vue.use(Geocoder, {
     defaultCountryCode: 'AR', // e.g. 'CA'
     defaultLanguage:    'es-419', // e.g. 'en'
     defaultMode:        'address', // or 'lat-lng'
-    googleMapsApiKey:   'AIzaSyB9vtZUehBaqSKq4psOePI82mS6Y9NjVNk'
+    googleMapsApiKey:   process.env.MIX_GOOGLE_MAP_KEY
 });
 /**
  * The following block of code may be used to automatically register your

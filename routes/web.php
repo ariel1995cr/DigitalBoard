@@ -21,6 +21,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+Route::get('/prueba', 'TaskController@index');
+
 //RUTAS TAREAS
 ////CREAR
 Route::post('/task', 'TaskController@crearTarea');

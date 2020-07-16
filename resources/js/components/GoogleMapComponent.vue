@@ -5,14 +5,23 @@
         :zoom="7"
         map-type-id="terrain"
         style="width: 100%; height: 94%; position:fixed"
+        :options="{
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+        disableDefaultUI: false
+        }"
         >
         <GmapInfoWindow  :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false">
-        <!-- some html here -->
+            {{infoContent}}
         </GmapInfoWindow>
         <GmapMarker
             :key="index"
             v-for="(m, index) in markers"
-            :position="m.task_ubication.position"
+            :position="m.position"
             :clickable="true"
             :draggable="false"
             @click="toggleInfoWindow(m,index)"
@@ -27,7 +36,7 @@ export default{// replace src with dist if you have Babel issues
   data () {
     return {
         markers: [],
-         infoContent: '',
+        infoContent: '',
         infoWindowPos: null,
         infoWinOpen: false,
         currentMidx: null,
@@ -49,9 +58,9 @@ export default{// replace src with dist if you have Babel issues
           axios.get('/task')
           .then(response=>{
               response.data.map(function(value, key){
-                value.task_ubication.position = {
-                    lat: Number(value.task_ubication.latitud),
-                    lng: Number(value.task_ubication.longitud)
+                value.position = {
+                    lat: Number(value.latitud),
+                    lng: Number(value.longitud)
                 };
               })
               this.markers = response.data;
@@ -62,7 +71,7 @@ export default{// replace src with dist if you have Babel issues
       },
        toggleInfoWindow (marker, idx) {
             this.infoWindowPos = marker.position;
-            this.infoContent = marker.infoText;
+            this.infoContent = marker;
 
             //check if its the same marker that was selected if yes toggle
             if (this.currentMidx == idx) {
