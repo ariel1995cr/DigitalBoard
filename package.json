@@ -17,9 +17,16 @@
         "laravel-mix": "^5.0.1",
         "lodash": "^4.17.13",
         "popper.js": "^1.12",
-        "resolve-url-loader": "^3.1.0",
-        "sass": "^1.15.2",
+        "resolve-url-loader": "^2.3.1",
+        "sass": "^1.20.1",
         "sass-loader": "^8.0.0",
-        "vue-template-compiler": "^2.6.11"
+        "vue": "^2.5.17",
+        "vue-template-compiler": "^2.6.10"
+    },
+    "dependencies": {
+        "@pderas/vue2-geocoder": "^1.1.0",
+        "primeicons": "^4.0.0",
+        "primevue": "^2.0.1",
+        "vue2-google-maps": "^0.10.7"
     }
 }

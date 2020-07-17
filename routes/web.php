@@ -20,3 +20,18 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/prueba', 'TaskController@index');
+
+//RUTAS TAREAS
+////CREAR
+Route::post('/task', 'TaskController@crearTarea');
+////LSITAR
+Route::get('/task', 'TaskController@listarTareas');
+////BUSCAR TAREA
+Route::get('/task/{latitud}/{longitud}', 'TaskController@buscarTareas');
+
+//RUTAS UBICACIONES
+///LISTAR UBICACIONES
+Route::get('/ubication', 'UbicationController@listarUbicaciones');
