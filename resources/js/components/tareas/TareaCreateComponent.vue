@@ -18,11 +18,19 @@
                         <div class="form-group col-12">
                             <label for="inputEmail4">Nombre</label>
                             <InputText
+<<<<<<< HEAD
                                 type="text"
                                 class="form-control"
                                 :class="{'is-invalid': this.errores['task.nombre']}"
                                 placeholder=""
                                 v-model="task.nombre"
+=======
+                                v-model="task.nombre"
+                                class="form-control"
+                                :class="{'is-invalid': this.errores['task.nombre']}"
+                                placeholder=""
+                                
+>>>>>>> fixBrian
                             />
                             <InlineMessage class="w-100" v-if="this.errores['task.nombre']">
                                     <p v-bind:key="index" v-for="(error,index) in this.errores['task.nombre']">
@@ -60,7 +68,7 @@
                                 </p>
                             </InlineMessage>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-12">
                         <SelectButton :class="{'is-invalid': this.errores['task.tipoIngreso']}" v-model="task.tipoIngreso" :options="opcionesdeUbicacion" />
                         <InlineMessage class="w-100" v-if="this.errores['task.tipoIngreso']">
                             <p v-bind:key="index" v-for="(error,index) in this.errores['task.tipoIngreso']">

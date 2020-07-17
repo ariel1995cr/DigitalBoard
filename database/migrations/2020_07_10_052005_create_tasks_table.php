@@ -18,11 +18,12 @@ class CreateTasksTable extends Migration
             $table->string('nombre');
             #$table->string('ubicacion_id');
             #$table->foreign('ubicacion_id')->references('id')->on('ubications');
-            $table->string('latitud');
-            $table->string('longitud');
-            $table->date('inicio');
-            $table->date('fin');
-            $table->longText('descripcion');
+            $table->string('latitud')->nullable();
+            $table->string('longitud')->nullable();
+            $table->date('inicio')->nullable();
+            $table->date('fin')->nullable();
+            $table->longText('descripcion')->nullable();
+            $table->string('direccion')->nullable();
             $table->timestamps();
         });
     }

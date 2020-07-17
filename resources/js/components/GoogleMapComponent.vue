@@ -1,12 +1,20 @@
 <template>
     <div class="fluid-container border border-primary" style="margin: 0px;">
         <GmapMap
+<<<<<<< HEAD
         :center="{lat:10, lng:10}"
+=======
+        :center="{lat:-43.89900470379856, lng:-68.52067077751256}"
+>>>>>>> fixBrian
         :zoom="7"
         map-type-id="terrain"
         style="width: 100%; height: 94%; position:fixed"
         :options="{
+<<<<<<< HEAD
         zoomControl: false,
+=======
+        zoomControl: true,
+>>>>>>> fixBrian
         mapTypeControl: false,
         scaleControl: false,
         streetViewControl: false,
@@ -119,7 +127,17 @@ export default{// replace src with dist if you have Babel issues
 .gm-style-iw-t{
     background-color: #1d3557 !important;
 }
+.gm-style-iw-d{
+    background-color: #1d3557 !important;
+}
 .gm-style-iw-t::after{
+    background: #1d3557 !important;
+}
+.gm-style-iw-d::after{
+    background: #1d3557 !important;
+}
+.gm-style .gm-style-iw-d::-webkit-scrollbar-track, 
+.gm-style .gm-style-iw-d::-webkit-scrollbar-track-piece{
     background: #1d3557 !important;
 }
 </style>

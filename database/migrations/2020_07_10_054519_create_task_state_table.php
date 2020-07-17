@@ -17,7 +17,7 @@ class CreateTaskStateTable extends Migration
             $table->unsignedBigInteger('task_id');
             $table->foreign('task_id')->references('id')->on('tasks');
             $table->string('state_id');
-            $table->foreign('state_id')->references('id')->on('state');
+            $table->foreign('state_id')->references('id')->on('states');
             $table->timestamps();
         });
     }
