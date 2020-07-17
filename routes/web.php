@@ -29,6 +29,8 @@ Route::get('/prueba', 'TaskController@index');
 Route::post('/task', 'TaskController@crearTarea');
 ////LSITAR
 Route::get('/task', 'TaskController@listarTareas');
+////BUSCAR TAREA
+Route::get('/task/{latitud}/{longitud}', 'TaskController@buscarTareas');
 
 //RUTAS UBICACIONES
 ///LISTAR UBICACIONES

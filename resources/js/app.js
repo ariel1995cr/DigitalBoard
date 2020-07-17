@@ -18,6 +18,13 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css';
+
+import Tooltip from 'primevue/tooltip';
+
+Vue.directive('tooltip', Tooltip);
+
+
 Vue.component('Toast', Toast,{
     autoZIndex: false,
 

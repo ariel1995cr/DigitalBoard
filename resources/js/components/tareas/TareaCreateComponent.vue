@@ -20,6 +20,7 @@
                             <InputText
                                 type="text"
                                 class="form-control"
+                                :class="{'is-invalid': this.errores['task.nombre']}"
                                 placeholder=""
                                 v-model="task.nombre"
                             />
@@ -34,6 +35,7 @@
                             <InputMask
                                 v-model="task.inicio"
                                 class="form-control"
+                                :class="{'is-invalid': this.errores['task.inicio']}"
                                 mask="99-99-9999"
                                 slotChar="dd-mm-yyyy"
                             />
@@ -48,6 +50,7 @@
                             <InputMask
                                 v-model="task.fin"
                                 class="form-control"
+                                :class="{'is-invalid': this.errores['task.fin']}"
                                 mask="99-99-9999"
                                 slotChar="dd-mm-yyyy"
                             />
@@ -58,7 +61,7 @@
                             </InlineMessage>
                         </div>
                         <div class="form-group col-md-6">
-                        <SelectButton v-model="task.tipoIngreso" :options="opcionesdeUbicacion" />
+                        <SelectButton :class="{'is-invalid': this.errores['task.tipoIngreso']}" v-model="task.tipoIngreso" :options="opcionesdeUbicacion" />
                         <InlineMessage class="w-100" v-if="this.errores['task.tipoIngreso']">
                             <p v-bind:key="index" v-for="(error,index) in this.errores['task.tipoIngreso']">
                                 {{error}}
@@ -79,6 +82,7 @@
                                     ]
                                 }"
                                 class="form-control"
+                                :class="{'is-invalid': this.errores['task.direccion']}"
                                 @place_changed="setPlace"
                             ></GmapAutocomplete>
 
@@ -97,6 +101,7 @@
                                     v-model.number.lazy="task.latitud"
                                     type="text"
                                     class="form-control"
+                                    :class="{'is-invalid': this.errores['task.latitud']}"
                                     placeholder=""
                                 />
                                 <InlineMessage class="w-100" v-if="this.errores['task.latitud']">
@@ -112,6 +117,7 @@
                                     v-model.number.lazy="task.longitud"
                                     type="text"
                                     class="form-control"
+                                    :class="{'is-invalid': this.errores['task.longitud']}"
                                     placeholder=""
                                 />
                                 <InlineMessage class="w-100" v-if="this.errores['task.longitud']">
@@ -120,6 +126,11 @@
                                     </p>
                                 </InlineMessage>
                             </div>
+                        </div>
+
+                        <div class="form-group col-12">
+                            <label for="inputEmail4">Descripción</label>
+                            <Textarea class="form-control" :class="{'is-invalid': this.errores['task.descripcion']}" v-model="task.descripcion" :autoResize="true" rows="3" cols="30" />
                         </div>
 
                         <GmapMap
@@ -151,18 +162,14 @@
                             />
                         </GmapMap>
 
+
+
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <Button @click="crearTarea()" label="Crear" class="p-button-raised p-button-text" />
-                <button
-                    type="button"
-                    class="btn btn-secondary"
-                    data-dismiss="modal"
-                >
-                    Close
-                </button>
+                <Button @click="crearTarea()" label="Crear" class="p-button-raised" />
+                <Button label="Cerrar" data-dismiss="modal" class="ml-3 p-button-raised p-button-secondary" />
             </div>
         </div>
     </div>
@@ -178,6 +185,7 @@ import Toast from 'primevue/toast';
 import InlineMessage from 'primevue/inlinemessage';
 import Dropdown from 'primevue/dropdown';
 import SelectButton from 'primevue/selectbutton';
+import Textarea from 'primevue/textarea';
 
 
 export default {
@@ -189,7 +197,8 @@ export default {
         Button,
         InlineMessage,
         Dropdown,
-        SelectButton
+        SelectButton,
+        Textarea
     },
     data() {
         return {
@@ -266,7 +275,9 @@ export default {
             axios.post('/task',{
                 task: this.task,
             }).then(response=>{
-                console.log(response.data);
+                 $('#exampleModal').modal('toggle');
+                this.$toast.add({severity:'success', summary: 'Tarea creada', detail:'Su tarea se ha creado satisfactoriamente.', life: 3000});
+                location.reload();
             }).catch(e => {
                 console.log(e)
                 console.log(e.response)
