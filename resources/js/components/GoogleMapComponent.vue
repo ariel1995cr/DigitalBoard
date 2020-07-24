@@ -1,20 +1,12 @@
 <template>
     <div class="fluid-container border border-primary" style="margin: 0px;">
         <GmapMap
-<<<<<<< HEAD
-        :center="{lat:10, lng:10}"
-=======
         :center="{lat:-43.89900470379856, lng:-68.52067077751256}"
->>>>>>> fixBrian
-        :zoom="7"
-        map-type-id="terrain"
+        :zoom="6.5"
+        map-type-id="roadmap"
         style="width: 100%; height: 94%; position:fixed"
         :options="{
-<<<<<<< HEAD
-        zoomControl: false,
-=======
         zoomControl: true,
->>>>>>> fixBrian
         mapTypeControl: false,
         scaleControl: false,
         streetViewControl: false,

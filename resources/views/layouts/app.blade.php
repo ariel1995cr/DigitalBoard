@@ -19,6 +19,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://unpkg.com/primevue/resources/themes/saga-blue/theme.css " rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <style>
         .pac-container{
             z-index: 1050 !important;

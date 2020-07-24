@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="exampleModalLabel">Crear tarea</h5>
                 <button
                     type="button"
-                    class="close"
+                    class="btn btn-primary"
                     data-dismiss="modal"
                     aria-label="Close"
                 >
@@ -18,19 +18,11 @@
                         <div class="form-group col-12">
                             <label for="inputEmail4">Nombre</label>
                             <InputText
-<<<<<<< HEAD
-                                type="text"
-                                class="form-control"
-                                :class="{'is-invalid': this.errores['task.nombre']}"
-                                placeholder=""
-                                v-model="task.nombre"
-=======
                                 v-model="task.nombre"
                                 class="form-control"
                                 :class="{'is-invalid': this.errores['task.nombre']}"
                                 placeholder=""
                                 
->>>>>>> fixBrian
                             />
                             <InlineMessage class="w-100" v-if="this.errores['task.nombre']">
                                     <p v-bind:key="index" v-for="(error,index) in this.errores['task.nombre']">
