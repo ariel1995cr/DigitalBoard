@@ -14,17 +14,14 @@ class CreateTaskStateTable extends Migration
     public function up()
     {
         Schema::create('task_state', function (Blueprint $table) {
-            
             $table->string('taskName', 100);
             $table->string('stateName', 100);
-            $table->primary(['taskName', 'stateName']);
-
-            $table->foreign('taskName')->references('taskName')->on('task');
-            $table->foreign('stateName')->references('stateName')->on('state');
-
             $table->date('taskStartState');
             $table->date('taskEndState');
-            
+
+            $table->primary(['taskName', 'stateName']);
+            $table->foreign('taskName')->references('taskName')->on('task');
+            $table->foreign('stateName')->references('stateName')->on('state');
         });
     }
 

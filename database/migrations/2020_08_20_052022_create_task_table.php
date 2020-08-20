@@ -14,23 +14,14 @@ class CreateTaskTable extends Migration
     public function up()
     {
         Schema::create('task', function (Blueprint $table) {
-            $table->string('taskName', 100);
+            $table->string('taskName', 100)->primary();
             $table->string('locationName', 100);
-            // $table->string('longitud', 100);
-            $table->primary(['locationName', 'taskName']);
-
-            $table->foreign('locationName')->references('name')->on('location');
-            
-
             $table->date('taskStart');
             $table->date('taskEnd');
             $table->string('taskDescription', 100);
-
-            
-            $table->bigInteger('createdBy')->unsigned();
+            $table->unsignedBigInteger('createdBy');
+            $table->foreign('locationName')->references('name')->on('location');
             $table->foreign('createdBy')->references('id')->on('users');
-
-           
         });
     }
 

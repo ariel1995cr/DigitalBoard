@@ -14,12 +14,12 @@ class CreateLocationTable extends Migration
     public function up()
     {
         Schema::create('location', function (Blueprint $table) {
-            $table->string('name');	
-            $table->string('direction', 100)->nullable();
+            $table->string('name');
             $table->string('latitud', 100);
-            $table->string('longitud', 100);
-            $table->primary(['latitud', 'longitud', 'name']);
+            $table->string('longitud', 100);	
+            $table->string('direction', 100)->nullable();
             $table->timestamps();
+            $table->primary(['name', 'latitud', 'longitud']);
         });
     }
 
