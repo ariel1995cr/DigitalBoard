@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUbicationsTable extends Migration
+class CreateStateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateUbicationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ubications', function (Blueprint $table) {
-            $table->string('id')->primary(); //Nombre Ubicación (EJ: ARSAT 1204)
-            $table->string('latitud');
-            $table->string('longitud');
-            $table->timestamps();
+        Schema::create('state', function (Blueprint $table) {
+            $table->string('stateName', 100)->primary();
         });
     }
 
@@ -28,6 +25,6 @@ class CreateUbicationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ubications');
+        Schema::dropIfExists('state');
     }
 }

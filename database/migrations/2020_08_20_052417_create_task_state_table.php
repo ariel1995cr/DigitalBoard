@@ -14,11 +14,17 @@ class CreateTaskStateTable extends Migration
     public function up()
     {
         Schema::create('task_state', function (Blueprint $table) {
-            $table->unsignedBigInteger('task_id');
-            $table->foreign('task_id')->references('id')->on('tasks');
-            $table->string('state_id');
-            $table->foreign('state_id')->references('id')->on('states');
-            $table->timestamps();
+            
+            $table->string('taskName', 100);
+            $table->string('stateName', 100);
+            $table->primary(['taskName', 'stateName']);
+
+            $table->foreign('taskName')->references('taskName')->on('task');
+            $table->foreign('stateName')->references('stateName')->on('state');
+
+            $table->date('taskStartState');
+            $table->date('taskEndState');
+            
         });
     }
 
