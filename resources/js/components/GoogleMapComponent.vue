@@ -18,10 +18,16 @@
         <GmapInfoWindow :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" @closeclick="infoWinOpen=false" @mouseout="infoWinOpen=false">
             <div class="row no-gutters position-relative" style="background-color: #457b9d !important">
                 <div class="col-12 position-static p-4">
-                    <h2>Información de marcador</h2>
-                    <h5 class="mt-0">Latitud: {{infoContent.latitud}} Longitud: {{infoContent.longitud}}</h5>
-                    <h5 class="mt-0">Cantidad de tareas: {{infoContent.totalTareas}}</h5>
-                    <Button @click="showModalTask = true" label="Ver tareas" style="background-color: white" class="p-button-raised p-button-text" />
+                    <h2>{{infoContent.name}}</h2>
+                    
+                    <hr>
+                    <h5 class="mt-0">{{infoContent.description}}</h5>
+                </div>
+                <div class="p-grid p-align-center mb-2">
+                    <div class="p-col">
+                        <i style="fontSize: 2rem" class="pi pi-map-marker ml-4 mr-3"></i>{{infoContent.latitud}}, {{infoContent.longitud}}
+                        <Button label="Tareas" icon="pi pi-eye" @click="showModalTask = true" class="ml-3" />
+                    </div>
                 </div>
             </div>
         </GmapInfoWindow>
@@ -74,7 +80,7 @@ export default{// replace src with dist if you have Babel issues
   },
   methods: {
       listarTareas() {
-          axios.get('/task')
+          axios.get('/ubication')
           .then(response=>{
               response.data.map(function(value, key){
                 value.position = {

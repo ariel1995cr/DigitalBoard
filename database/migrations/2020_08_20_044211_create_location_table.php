@@ -18,6 +18,7 @@ class CreateLocationTable extends Migration
             $table->string('latitud', 100);
             $table->string('longitud', 100);	
             $table->string('direction', 100)->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
             $table->primary(['name', 'latitud', 'longitud']);
         });

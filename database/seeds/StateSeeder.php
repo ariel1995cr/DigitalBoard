@@ -12,16 +12,16 @@ class StateSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('states')->insert([
-            'id' => 'Planificación',
+        DB::table('state')->insert([
+            'stateName' => 'Planificación',
         ]);
 
-        DB::table('states')->insert([
-            'id' => 'Proceso',
+        DB::table('state')->insert([
+            'stateName' => 'Proceso',
         ]);
 
-        DB::table('states')->insert([
-            'id' => 'Finalizado',
+        DB::table('state')->insert([
+            'stateName' => 'Finalizado',
         ]);
     }
 }

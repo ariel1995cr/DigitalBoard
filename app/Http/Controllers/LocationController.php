@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Ubication;
+use App\Location;
 use Illuminate\Http\Request;
 
-class UbicationController extends Controller
+class LocationController extends Controller
 {
     //
     public function listarUbicaciones()
     {
-        return response()->Json(Ubication::all());
+        return response()->Json(Location::all());
     }
 }

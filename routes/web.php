@@ -34,4 +34,4 @@ Route::get('/task/{latitud}/{longitud}', 'TaskController@buscarTareas');
 
 //RUTAS UBICACIONES
 ///LISTAR UBICACIONES
-Route::get('/ubication', 'UbicationController@listarUbicaciones');
+Route::get('/ubication', 'LocationController@listarUbicaciones');
