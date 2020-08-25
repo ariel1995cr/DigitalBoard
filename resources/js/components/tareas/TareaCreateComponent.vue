@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Crear tarea</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Crear locación</h5>
                 <button
                     type="button"
                     class="btn btn-primary"
@@ -18,59 +18,59 @@
                         <div class="form-group col-12">
                             <label for="inputEmail4">Nombre</label>
                             <InputText
-                                v-model="task.nombre"
+                                v-model="locacion.name"
                                 class="form-control"
-                                :class="{'is-invalid': this.errores['task.nombre']}"
+                                :class="{'is-invalid': this.errores['locacion.name']}"
                                 placeholder=""
                                 
                             />
-                            <InlineMessage class="w-100" v-if="this.errores['task.nombre']">
-                                    <p v-bind:key="index" v-for="(error,index) in this.errores['task.nombre']">
+                            <InlineMessage class="w-100" v-if="this.errores['locacion.name']">
+                                    <p v-bind:key="index" v-for="(error,index) in this.errores['locacion.name']">
                                     {{error}}
                                     </p>
                             </InlineMessage>
                         </div>
-                        <div class="form-group col-md-6">
+                        <!-- <div class="form-group col-md-6">
                             <label for="inputEmail4">Fecha inicio</label>
                             <InputMask
-                                v-model="task.inicio"
+                                v-model="locacion.inicio"
                                 class="form-control"
-                                :class="{'is-invalid': this.errores['task.inicio']}"
+                                :class="{'is-invalid': this.errores['locacion.inicio']}"
                                 mask="99-99-9999"
                                 slotChar="dd-mm-yyyy"
                             />
-                            <InlineMessage class="w-100" v-if="this.errores['task.inicio']">
-                                    <p v-bind:key="index" v-for="(error,index) in this.errores['task.inicio']">
+                            <InlineMessage class="w-100" v-if="this.errores['locacion.inicio']">
+                                    <p v-bind:key="index" v-for="(error,index) in this.errores['locacion.inicio']">
                                     {{error}}
                                     </p>
                             </InlineMessage>
-                        </div>
-                        <div class="form-group col-md-6">
+                        </div> -->
+                        <!-- <div class="form-group col-md-6">
                             <label for="inputEmail4">Fecha fin</label>
                             <InputMask
-                                v-model="task.fin"
+                                v-model="locacion.fin"
                                 class="form-control"
-                                :class="{'is-invalid': this.errores['task.fin']}"
+                                :class="{'is-invalid': this.errores['locacion.fin']}"
                                 mask="99-99-9999"
                                 slotChar="dd-mm-yyyy"
                             />
-                            <InlineMessage class="w-100" v-if="this.errores['task.fin']">
-                                <p v-bind:key="index" v-for="(error,index) in this.errores['task.fin']">
+                            <InlineMessage class="w-100" v-if="this.errores['locacion.fin']">
+                                <p v-bind:key="index" v-for="(error,index) in this.errores['locacion.fin']">
                                     {{error}}
                                 </p>
                             </InlineMessage>
-                        </div>
+                        </div> -->
                         <div class="form-group col-12">
-                        <SelectButton :class="{'is-invalid': this.errores['task.tipoIngreso']}" v-model="task.tipoIngreso" :options="opcionesdeUbicacion" />
-                        <InlineMessage class="w-100" v-if="this.errores['task.tipoIngreso']">
-                            <p v-bind:key="index" v-for="(error,index) in this.errores['task.tipoIngreso']">
+                        <SelectButton :class="{'is-invalid': this.errores['locacion.tipoIngreso']}" v-model="locacion.tipoIngreso" :options="opcionesdeUbicacion" />
+                        <InlineMessage class="w-100" v-if="this.errores['locacion.tipoIngreso']">
+                            <p v-bind:key="index" v-for="(error,index) in this.errores['locacion.tipoIngreso']">
                                 {{error}}
                             </p>
                         </InlineMessage>
                         </div>
 
 
-                        <div class="form-group col-md-12" v-if="task.tipoIngreso === 'Direccion'">
+                        <div class="form-group col-md-12" v-if="locacion.tipoIngreso === 'Dirección'">
                             <label for="inputEmail4">Dirección</label>
 
                             <GmapAutocomplete
@@ -82,30 +82,30 @@
                                     ]
                                 }"
                                 class="form-control"
-                                :class="{'is-invalid': this.errores['task.direccion']}"
+                                :class="{'is-invalid': this.errores['locacion.direction']}"
                                 @place_changed="setPlace"
                             ></GmapAutocomplete>
 
-                            <InlineMessage class="w-100" v-if="this.errores['task.direccion']">
-                            <p v-bind:key="index" v-for="(error,index) in this.errores['task.direccion']">
+                            <InlineMessage class="w-100" v-if="this.errores['locacion.direction']">
+                            <p v-bind:key="index" v-for="(error,index) in this.errores['locacion.direction']">
                                 {{error}}
                             </p>
                         </InlineMessage>
                         </div>
 
-                        <div class="row" v-if="task.tipoIngreso === 'Coordenadas'">
+                        <div class="row" v-if="locacion.tipoIngreso === 'Coordenadas'">
                             <div class="form-group col">
                                 <label for="inputEmail4">Latitud</label>
                                 <InputText
                                     @change="ubicacionModificada"
-                                    v-model.number.lazy="task.latitud"
+                                    v-model.number.lazy="locacion.latitud"
                                     type="text"
                                     class="form-control"
-                                    :class="{'is-invalid': this.errores['task.latitud']}"
+                                    :class="{'is-invalid': this.errores['locacion.latitud']}"
                                     placeholder=""
                                 />
-                                <InlineMessage class="w-100" v-if="this.errores['task.latitud']">
-                                    <p v-bind:key="index" v-for="(error,index) in this.errores['task.latitud']">
+                                <InlineMessage class="w-100" v-if="this.errores['locacion.latitud']">
+                                    <p v-bind:key="index" v-for="(error,index) in this.errores['locacion.latitud']">
                                         {{error}}
                                     </p>
                                 </InlineMessage>
@@ -114,14 +114,14 @@
                                 <label for="inputEmail4">Longitud</label>
                                 <InputText
                                     @change="ubicacionModificada"
-                                    v-model.number.lazy="task.longitud"
+                                    v-model.number.lazy="locacion.longitud"
                                     type="text"
-                                    class="form-control"
-                                    :class="{'is-invalid': this.errores['task.longitud']}"
+                                    class="form-control w-100" 
+                                    :class="{'is-invalid': this.errores['locacion.longitud']}"
                                     placeholder=""
                                 />
-                                <InlineMessage class="w-100" v-if="this.errores['task.longitud']">
-                                    <p v-bind:key="index" v-for="(error,index) in this.errores['task.longitud']">
+                                <InlineMessage class="w-100" v-if="this.errores['locacion.longitud']">
+                                    <p v-bind:key="index" v-for="(error,index) in this.errores['locacion.longitud']">
                                         {{error}}
                                     </p>
                                 </InlineMessage>
@@ -130,7 +130,7 @@
 
                         <div class="form-group col-12">
                             <label for="inputEmail4">Descripción</label>
-                            <Textarea class="form-control" :class="{'is-invalid': this.errores['task.descripcion']}" v-model="task.descripcion" :autoResize="true" rows="3" cols="30" />
+                            <Textarea class="form-control" :class="{'is-invalid': this.errores['locacion.description']}" v-model="locacion.description" :autoResize="true" rows="3" cols="30" />
                         </div>
 
                         <GmapMap
@@ -168,7 +168,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <Button @click="crearTarea()" label="Crear" class="p-button-raised" />
+                <Button @click="crearLocacion()" label="Crear" class="p-button-raised" />
                 <Button label="Cerrar" data-dismiss="modal" class="ml-3 p-button-raised p-button-secondary" />
             </div>
         </div>
@@ -202,22 +202,18 @@ export default {
     },
     data() {
         return {
-            task: {
-                nombre: "",
+            locacion: {
+                name: "",
                 latitud: "",
                 longitud: "",
-                inicio: "",
-                direccion:"",
-                fin: "",
-                descripcion: "",
-                created_at: "",
-                updated_at: "",
-                tipoIngreso: 'Direccion',
+                direction:"",
+                description: "",
+                tipoIngreso: 'Dirección',
             },
             place: null,
             markers: [],
             ubicaciones: [],
-            opcionesdeUbicacion: ['Direccion','Coordenadas'],
+            opcionesdeUbicacion: ['Dirección','Coordenadas'],
             errores:{
 
             }
@@ -240,14 +236,14 @@ export default {
                         lng: this.place.geometry.location.lng()
                     }
                 });
-                this.task.latitud = this.place.geometry.location.lat();
-                this.task.longitud = this.place.geometry.location.lng();
-                this.task.direccion = this.place.formatted_address;
+                this.locacion.latitud = this.place.geometry.location.lat();
+                this.locacion.longitud = this.place.geometry.location.lng();
+                this.locacion.direction = this.place.formatted_address;
                 this.place = null;
             }
         },
         ubicacionModificada() {
-            if(this.task.latitud === '' || this.task.longitud ===''){
+            if(this.locacion.latitud === '' || this.locacion.longitud ===''){
                 return ;
             }
 
@@ -260,23 +256,23 @@ export default {
                 });
             }
 
-            this.markers[0].position.lat = this.task.latitud;
-            this.markers[0].position.lng = this.task.longitud;
+            this.markers[0].position.lat = this.locacion.latitud;
+            this.markers[0].position.lng = this.locacion.longitud;
             Vue.$geocoder.setDefaultMode("lat-lng");
             var latLngObj = {
-                lat: this.task.latitud,
-                lng: this.task.longitud
+                lat: this.locacion.latitud,
+                lng: this.locacion.longitud
             };
             Vue.$geocoder.send(latLngObj, response => {
                 console.log(response);
             });
         },
-        crearTarea () {
-            axios.post('/task',{
-                task: this.task,
+        crearLocacion () {
+            axios.post('/locacion',{
+                locacion: this.locacion,
             }).then(response=>{
                  $('#exampleModal').modal('toggle');
-                this.$toast.add({severity:'success', summary: 'Tarea creada', detail:'Su tarea se ha creado satisfactoriamente.', life: 3000});
+                this.$toast.add({severity:'success', summary: 'Locacion creada', detail:'Su locacion se ha creado satisfactoriamente.', life: 3000});
                 location.reload();
             }).catch(e => {
                 console.log(e)

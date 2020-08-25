@@ -26,7 +26,7 @@ Route::get('/prueba', 'TaskController@index');
 
 //RUTAS TAREAS
 ////CREAR
-Route::post('/task', 'TaskController@crearTarea');
+Route::post('locacion', 'LocationController@create');
 ////LSITAR
 Route::get('/task', 'TaskController@listarTareas');
 ////BUSCAR TAREA
